@@ -5,126 +5,91 @@
 Write your code in this editor and press "Run" button to execute it.
 
 *******************************************************************************/
-import java.util.Stack;
-
-
+import java.util.Scanner;
+import java.util.regex.Matcher; 
+import java.util.regex.Pattern; 
 
 public class Main
 {
-  static void compute (String a) throws InvalidOperatorException
-  {
-
-    throw new InvalidOperatorException (a);
-    //  System.out.println("No error in prog. no exception caught");
-  }
-
-
-  public static int evaluate (String expression)
-  {
-    char[] tokens = expression.toCharArray ();
-
-  
-      Stack < Integer > values = new Stack < Integer > ();
-
-
-      Stack < Character > ops = new Stack < Character > ();
-
-    for (int i = 0; i < tokens.length; i++)
-      {
-
-	if (tokens[i] == ' ')
-	  continue;
-
-	if (tokens[i] >= '0' && tokens[i] <= '9')
-	  {
-	    StringBuffer sbuf = new StringBuffer ();
-	
-	    while (i < tokens.length && tokens[i] >= '0' && tokens[i] <= '9')
-	        sbuf.append (tokens[i++]);
-	      values.push (Integer.parseInt (sbuf.toString ()));
-	  }
-
-	
-	else if (tokens[i] == '(')
-	  ops.push (tokens[i]);
-
-	else if (tokens[i] == ')')
-	  {
-	    while (ops.peek () != '(')
-	      values.
-		push (applyOp (ops.pop (), values.pop (), values.pop ()));
-	    ops.pop ();
-	  }
-
-	
-	else if (tokens[i] == '+' || tokens[i] == '-' ||
-		 tokens[i] == '*' || tokens[i] == '/')
-	  {
-	   
-	    while (!ops.empty () && hasPrecedence (tokens[i], ops.peek ()))
-	      values.
-		push (applyOp (ops.pop (), values.pop (), values.pop ()));
-
-	
-	    ops.push (tokens[i]);
-	  }
-	else
-	  {
-	    try
-	    {
-	      compute (String.valueOf (tokens[i]));
-	    }
-	    catch (InvalidOperatorException ex1)
-	    {
-	      System.out.println (ex1);
-	      break;
-	    }
-
-	  }
-      }
-
-
-    while (!ops.empty ())
-      values.push (applyOp (ops.pop (), values.pop (), values.pop ()));
-
-
-    return values.pop ();
-  }
-
-
-  public static boolean hasPrecedence (char op1, char op2)
-  {
-    if (op2 == '(' || op2 == ')')
-      return false;
-    if ((op1 == '*' || op1 == '/') && (op2 == '+' || op2 == '-'))
-      return false;
-    else
-      return true;
-  }
-
-
-  public static int applyOp (char op, int b, int a)
-  {
-    switch (op)
-      {
-      case '+':
-	return a + b;
-      case '-':
-	return a - b;
-      case '*':
-	return a * b;
-      case '/':
-	if (b == 0)
-	  throw new UnsupportedOperationException ("Cannot divide by zero");
-	return a / b;
-      }
-    return 0;
-  }
-
  
-  public static void main (String[]args)
+    public static boolean isValid(String email) 
+    { 
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+ 
+                            "[a-zA-Z0-9_+&*-]+)*@" + 
+                            "(?:[a-zA-Z0-9-]+\\.)+[a-z" + 
+                            "A-Z]{2,7}$"; 
+                              
+        Pattern pat = Pattern.compile(emailRegex); 
+        if (email == null) 
+            return false; 
+        return pat.matcher(email).matches(); 
+    }   
+    
+    
+    
+    
+  public static void main (String[]args) throws InvalidUserException,InvalidEmailIdException
   {
-    System.out.println (Main.evaluate ("100 * ( 2 + 12 )"));
+          String Useremail ="";
+             Scanner scanner1 = new Scanner (System.in);
+        System.out.println ("Enter the Email to validate :");
+    
+        Useremail = scanner1.nextLine ();
+    try
+    {
+      Scanner scanner = new Scanner (System.in);
+        System.out.println ("Enter the username to validate :");
+      String userName = scanner.nextLine ();
+      
+      
+    //   Scanner scanner1 = new Scanner (System.in);
+    //     System.out.println ("Enter the Email to validate :");
+    
+    //     Useremail = scanner1.nextLine ();
+      
+      
+      int length = userName.length ();
+          char c;
 
+      for (int i = 0; i < length; i++)	//Check for `Firstname`
+	{
+	  c = userName.charAt (i);
+	  
+	  if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) && c != ' ')
+	  
+	    {
+	        
+	     continue;
+	     
+	    }
+	   // else{
+	        
+	   //     throw new InvalidUserException ("Invalid username entered");
+	        
+	   // }
+	  
+	}
+
+    }
+    catch (Exception e)
+    {
+    throw new InvalidUserException ("Invalid username entered");
+     
+    }
+    try{
+        
+        
+        if(isValid(Useremail)) {
+            System.out.print("Valid Email"); 
+      }
+     
+    }
+    catch(Exception ee ){
+        
+         throw new InvalidEmailIdException ("Invalid Email ID entered");
+    }
+    
+      
+    } 
   }
-}
+
